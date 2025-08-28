@@ -17,8 +17,11 @@ st.set_page_config(
 # Custom CSS for better styling
 st.markdown("""
 <style>
+    /* Import Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
     /* Main background */
-    .main {
+    .main > div {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         padding: 2rem;
     }
@@ -38,12 +41,14 @@ st.markdown("""
         font-size: 3rem;
         margin-bottom: 0.5rem;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        font-family: 'Poppins', sans-serif;
     }
     
     .main-header p {
         color: rgba(255,255,255,0.9);
         font-size: 1.2rem;
         margin: 0;
+        font-family: 'Poppins', sans-serif;
     }
     
     /* Card styling */
@@ -55,6 +60,7 @@ st.markdown("""
         text-align: center;
         margin: 0.5rem;
         transition: transform 0.3s ease;
+        font-family: 'Poppins', sans-serif;
     }
     
     .metric-card:hover {
@@ -71,6 +77,7 @@ st.markdown("""
         text-align: center;
         margin: 1.5rem 0 1rem 0;
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        font-family: 'Poppins', sans-serif;
     }
     
     /* Warning boxes */
@@ -81,6 +88,7 @@ st.markdown("""
         border-radius: 8px;
         margin: 1rem 0;
         text-align: center;
+        font-family: 'Poppins', sans-serif;
     }
     
     /* Success boxes */
@@ -90,6 +98,7 @@ st.markdown("""
         padding: 1rem;
         border-radius: 8px;
         margin: 1rem 0;
+        font-family: 'Poppins', sans-serif;
     }
     
     /* Footer */
@@ -100,17 +109,60 @@ st.markdown("""
         padding: 2rem;
         border-radius: 10px;
         margin-top: 3rem;
+        font-family: 'Poppins', sans-serif;
     }
     
-    /* Sidebar styling */
-    .css-1d391kg {
-        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    /* Sidebar Fixes - IMPORTANT! */
+    .css-1d391kg, .css-1y4p8pa {
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%) !important;
+        color: white !important;
+    }
+    
+    /* Sidebar text color */
+    .css-1d391kg .css-10trblm {
+        color: white !important;
+    }
+    
+    .css-1d391kg .css-1cpxqw2 {
+        color: white !important;
+    }
+    
+    /* Sidebar when collapsed */
+    .css-1y4p8pa {
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%) !important;
+    }
+    
+    /* Sidebar toggle button */
+    .css-vk3wp9 {
+        background-color: rgba(255,255,255,0.1) !important;
+        border: 1px solid rgba(255,255,255,0.2) !important;
+    }
+    
+    .css-vk3wp9:hover {
+        background-color: rgba(255,255,255,0.2) !important;
+    }
+    
+    /* Sidebar content when expanded */
+    .css-1d391kg .block-container {
+        padding: 1rem !important;
     }
     
     /* Remove default streamlit styling */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
+    
+    /* Font family for all elements */
+    .css-1d391kg, .css-1d391kg * {
+        font-family: 'Poppins', sans-serif !important;
+    }
+    
+    /* Sidebar responsive fix */
+    @media (max-width: 768px) {
+        .css-1d391kg {
+            min-width: 250px !important;
+        }
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -126,13 +178,35 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ===============================
-# SIDEBAR
+# SIDEBAR + MAIN NAVIGATION
 # ===============================
 st.sidebar.markdown("## 🎯 Navigation")
 page_selection = st.sidebar.selectbox(
     "Choose Analysis Section:",
     ["📊 Overview & Metrics", "📋 Detailed Data", "📈 Visualizations", "📝 Reports", "💡 Insights"]
 )
+
+# Fallback navigation di main area jika sidebar bermasalah
+st.markdown("### 🧭 Quick Navigation")
+col1, col2, col3, col4, col5 = st.columns(5)
+
+with col1:
+    if st.button("📊 Overview", use_container_width=True):
+        page_selection = "📊 Overview & Metrics"
+with col2:
+    if st.button("📋 Data", use_container_width=True):
+        page_selection = "📋 Detailed Data"
+with col3:
+    if st.button("📈 Charts", use_container_width=True):
+        page_selection = "📈 Visualizations"
+with col4:
+    if st.button("📝 Report", use_container_width=True):
+        page_selection = "📝 Reports"
+with col5:
+    if st.button("💡 Insights", use_container_width=True):
+        page_selection = "💡 Insights"
+
+st.markdown("---")
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 🔧 Settings")
