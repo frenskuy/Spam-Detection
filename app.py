@@ -268,7 +268,7 @@ report_content, report_loaded = load_report()
 # PAGE CONTENT BASED ON SELECTION
 # ===============================
 
-if page_selection == "📊 Overview & Metrics":
+if st.session_state.page_selection == "📊 Overview & Metrics":
     st.markdown('<div class="section-header"><h2>📊 Dashboard Overview</h2></div>', unsafe_allow_html=True)
     
     if data_loaded and df_spam is not None:
@@ -360,38 +360,39 @@ if page_selection == "📊 Overview & Metrics":
         </div>
         """, unsafe_allow_html=True)
 
-elif page_selection == "📋 Detailed Data":
+elif st.session_state.page_selection == "📋 Detailed Data":
     st.markdown('<div class="section-header"><h2>📋 Detailed Spam Detection Results</h2></div>', unsafe_allow_html=True)
     
     if data_loaded and df_spam is not None:
-        # Pastikan session_state ada untuk filter
-        if "filter_type" not in st.session_state:
-            st.session_state.filter_type = "All"
-        
         # Filter options hanya jika ada kolom spam_classification
         if 'spam_classification' in df_spam.columns:
-            filter_type = st.selectbox(
+            filter_options = ["All", "Spam", "Not Spam"]
+            selected_filter = st.selectbox(
                 "Filter by Type:",
-                ["All", "Spam", "Not Spam"],
-                index=["All", "Spam", "Not Spam"].index(st.session_state.filter_type),
-                key="filter_type"
+                filter_options,
+                index=filter_options.index(st.session_state.filter_type),
+                key="data_filter"
             )
+            
+            # Update session state untuk filter
+            if selected_filter != st.session_state.filter_type:
+                st.session_state.filter_type = selected_filter
         else:
-            filter_type = "All"
+            selected_filter = "All"
             st.info("ℹ️ spam_classification column not found. Showing all data.")
         
         # Copy data
         filtered_df = df_spam.copy()
         try:
-            if filter_type == "Spam":
+            if st.session_state.filter_type == "Spam":
                 filtered_df = filtered_df[filtered_df['spam_classification'] == 'Spam']
-            elif filter_type == "Not Spam":
+            elif st.session_state.filter_type == "Not Spam":
                 filtered_df = filtered_df[filtered_df['spam_classification'] == 'Not Spam']
         except Exception as e:
             st.error(f"Error applying filter: {str(e)}")
             filtered_df = df_spam.copy()
         
-        # Tampilkan hanya kolom processed_text & spam_reason
+        # Tampilkan data
         display_cols = ["processed_text", "spam_reason"]
         available_cols = [col for col in display_cols if col in filtered_df.columns]
         
@@ -407,8 +408,7 @@ elif page_selection == "📋 Detailed Data":
     else:
         st.markdown('<div class="warning-box">⚠️ Spam detection data not available</div>', unsafe_allow_html=True)
 
-
-elif page_selection == "📈 Visualizations":
+elif st.session_state.page_selection == "📈 Visualizations":
     st.markdown('<div class="section-header"><h2>📈 Advanced Visualizations</h2></div>', unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
@@ -431,7 +431,7 @@ elif page_selection == "📈 Visualizations":
         except:
             st.markdown('<div class="warning-box">⚠️ Visualization image not found</div>', unsafe_allow_html=True)
 
-elif page_selection == "📝 Reports":
+elif st.session_state.page_selection == "📝 Reports":
     st.markdown('<div class="section-header"><h2>📝 Comprehensive Analysis Report</h2></div>', unsafe_allow_html=True)
     
     if report_loaded and report_content:
@@ -448,7 +448,7 @@ elif page_selection == "📝 Reports":
             mime="text/markdown"
         )
 
-elif page_selection == "💡 Insights":
+elif st.session_state.page_selection == "💡 Insights":
     st.markdown('<div class="section-header"><h2>💡 Key Insights & Recommendations</h2></div>', unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
