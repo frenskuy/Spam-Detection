@@ -345,7 +345,7 @@ elif page_selection == "📋 Detailed Data":
     if data_loaded and df_spam is not None:
         # Filter options hanya Spam/Not Spam
         if 'spam_classification' in df_spam.columns:
-            filter_type = st.selectbox("Filter by Type:", ["Spam Only", "Not Spam"], index=0)
+            filter_type = st.selectbox("Filter by Type:", ["Spam", "Not Spam"], index=0)
         else:
             filter_type = "All"
             st.info("ℹ️ spam_classification column not found. Showing all data.")
