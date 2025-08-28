@@ -15,6 +15,7 @@ Tujuan utama dari proyek ini adalah mengeksplorasi bagaimana **Large Language Mo
 ---
 
 ## 📂 Struktur Repository
+```
 Spam-Detection/
 ├── Code/
 │   └── Analisis_Sentimen.ipynb
@@ -32,6 +33,7 @@ Spam-Detection/
 │   └── visualisasi_spam_detail_20250828_070506.png
 │   └── wordcloud_spam_analysis_20250828_070512.png
 └── README.md
+```
 ---
 
 ## ⚙️ Teknologi yang Digunakan
@@ -50,6 +52,8 @@ Spam-Detection/
   - ❗ Penggunaan tanda baca/emoji berlebihan.  
 - Wordcloud spam menampilkan kata dominan terkait **promosi & link**,  sedangkan non-spam lebih banyak berisi **opini & komentar alami**.  
 
+---
+
 <p align="center">
   <img src="Output/wordcloud_spam_analysis_20250828_070512.png" alt="WordCloud Spam" width="600"/>
 </p>
@@ -57,6 +61,7 @@ Spam-Detection/
 <p align="center">
   <img src="Output/visualisasi_spam_detail_20250828_070506.png" alt="Distribusi Spam Detail" width="600"/>
 </p>
+
 ---
 
 ## 🤖 Peran AI (IBM Granite)
