@@ -321,7 +321,7 @@ if page_selection == "📊 Overview & Metrics":
             
             fig.update_layout(
                 title="Spam vs Non-Spam Distribution",
-                title_x=0.5,
+                title_x=0.3,
                 font=dict(size=16),
                 showlegend=True,
                 height=400,
@@ -354,9 +354,9 @@ elif page_selection == "📋 Detailed Data":
         filtered_df = df_spam.copy()
         try:
             if filter_type == "Spam" and 'spam_classification' in df_spam.columns:
-                filtered_df = filtered_df[filtered_df['spam_classification'] == 'spam']
+                filtered_df = filtered_df[filtered_df['spam_classification'] == 'Spam']
             elif filter_type == "Not Spam" and 'spam_classification' in df_spam.columns:
-                filtered_df = filtered_df[filtered_df['spam_classification'] != 'spam']
+                filtered_df = filtered_df[filtered_df['spam_classification'] != 'Spam']
         except Exception as e:
             st.error(f"Error applying filter: {str(e)}")
             filtered_df = df_spam.copy()
