@@ -10,7 +10,7 @@ Tujuan utama dari proyek ini adalah mengeksplorasi bagaimana **Large Language Mo
 - 🔎 **Deteksi spam** dalam percakapan di Twitter.  
 - 😀 **Klasifikasi teks** untuk memahami pola konten.  
 - 📝 **Ringkasan otomatis** dari kumpulan data sosial media.  
-- 📊 Visualisasi pola bahasa & distribusi spam.  
+- 📊 **Visualisasi** pola bahasa & distribusi spam.  
 
 ---
 
@@ -38,8 +38,7 @@ Spam-Detection/
 
 ## ⚙️ Teknologi yang Digunakan
 - **Python** (Pandas, Numpy, Matplotlib, Seaborn)  
-- **LangChain Community + Replicate API** (akses IBM Granite LLM)  
-- **Transformers (HuggingFace)** untuk NLP pipeline  
+- **LangChain Community + Replicate API** (akses IBM Granite LLM)    
 - **WordCloud** untuk visualisasi teks  
 
 ---
