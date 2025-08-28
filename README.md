@@ -72,8 +72,12 @@ Spam-Detection/
 ---
 
 ## ✅ Kesimpulan & Rekomendasi
-- Spam di Twitter pada periode analisis terdeteksi dalam jumlah terbatas.  
-- Spam umumnya berupa promosi clickbait dengan link pendek.  
-- **Rekomendasi pengembangan selanjutnya**:  
-  - Tambahkan analisis **sentimen (positif/negatif/netral)**.  
-  - Analisis tren spam berdasarkan **linimasa** (tanggal/waktu).  
+- Proporsi spam relatif rendah.
+- Spam didominasi oleh link pendek + promosi clickbait.
+- AI efektif dalam klasifikasi dan memberikan penjelasan mengapa..  
+
+---
+
+## 💡Rekomendasi:  
+- Tambahkan analisis **sentimen (positif/negatif/netral)**.
+- Analisis tren spam berdasarkan **linimasa** (tanggal/waktu).  
