@@ -321,7 +321,7 @@ if page_selection == "📊 Overview & Metrics":
             
             fig.update_layout(
                 title="Spam vs Non-Spam Distribution",
-                title_x=0.3,
+                title_x=0.32,
                 font=dict(size=16),
                 showlegend=True,
                 height=400,
