@@ -467,19 +467,19 @@ elif page_selection == "📈 Visualizations":
         # Text length analysis with error handling
         try:
             text_columns = [col for col in df_spam.columns if 'text' in col.lower()]
-            if text_columns and 'prediction' in df_spam.columns:
+            if text_columns and 'processed_text' in df_spam.columns:
                 df_viz = df_spam.copy()
                 df_viz['text_length'] = df_viz[text_columns[0]].astype(str).str.len()
                 
-                fig = px.box(df_viz, x='prediction', y='text_length', 
+                fig = px.box(df_viz, x='processed_text', y='text_length', 
                             title="Text Length Distribution by Category",
-                            color='prediction',
+                            color='processed_text',
                             color_discrete_map={'spam': '#ff6b6b', 'non_spam': '#4ecdc4'})
                 
                 fig.update_layout(height=400)
                 st.plotly_chart(fig, use_container_width=True)
             else:
-                st.info("📊 Text analysis requires 'text' and 'prediction' columns")
+                st.info("📊 Text analysis requires 'text' and 'processed_text' columns")
         except Exception as e:
             st.warning(f"⚠️ Could not create text length analysis: {str(e)}")
 
@@ -531,18 +531,6 @@ elif page_selection == "💡 Insights":
             </ul>
         </div>
         """, unsafe_allow_html=True)
-    
-    st.markdown("### 📊 Performance Metrics")
-    
-    # Mock performance metrics (replace with actual data)
-    metrics_col1, metrics_col2, metrics_col3 = st.columns(3)
-    
-    with metrics_col1:
-        st.metric("🎯 Accuracy", "94.2%", "2.1%")
-    with metrics_col2:
-        st.metric("🔍 Precision", "91.8%", "1.5%")
-    with metrics_col3:
-        st.metric("📈 Recall", "89.6%", "0.8%")
 
 # ===============================
 # FOOTER
