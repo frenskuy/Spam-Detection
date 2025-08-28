@@ -346,11 +346,11 @@ elif page_selection == "📋 Detailed Data":
         # Filter options with default values
         col1, col2 = st.columns(2)
         with col1:
-            if 'prediction' in df_spam.columns:
+            if 'spam_classification' in df_spam.columns:
                 filter_type = st.selectbox("Filter by Type:", ["All", "Spam Only", "Non-Spam Only"], index=0)
             else:
                 filter_type = "All"
-                st.info("ℹ️ Prediction column not found. Showing all data.")
+                st.info("ℹ️ spam_classification column not found. Showing all data.")
         with col2:
             search_term = st.text_input("🔍 Search in tweets:", "")
         
@@ -358,10 +358,10 @@ elif page_selection == "📋 Detailed Data":
         filtered_df = df_spam.copy()
         
         try:
-            if filter_type == "Spam Only" and 'prediction' in df_spam.columns:
-                filtered_df = filtered_df[filtered_df['prediction'] == 'spam']
-            elif filter_type == "Non-Spam Only" and 'prediction' in df_spam.columns:
-                filtered_df = filtered_df[filtered_df['prediction'] != 'spam']
+            if filter_type == "Spam Only" and 'spam_classification' in df_spam.columns:
+                filtered_df = filtered_df[filtered_df['spam_classification'] == 'spam']
+            elif filter_type == "Non-Spam Only" and 'spam_classification' in df_spam.columns:
+                filtered_df = filtered_df[filtered_df['spam_classification'] != 'spam']
         except Exception as e:
             st.error(f"Error applying filter: {str(e)}")
             filtered_df = df_spam.copy()
@@ -370,7 +370,11 @@ elif page_selection == "📋 Detailed Data":
         if search_term and len(search_term.strip()) > 0:
             # Cari kolom teks prioritas
             possible_text_cols = ["full_text", "processed_text", "spam_classification", "spam_indicators"]
-            text_columns = [col for col in possible_text_cols if col in filtered_df.columns]
+            text_columns = []
+            if 'full_text' in filtered_df.columns:
+                text_columns.append('full_text')
+            elif 'processed_text' in filtered_df.columns:
+                text_columns.append('processed_text')
         
             # Kalau tidak ketemu, fallback ke kolom string terpanjang
             if not text_columns:
