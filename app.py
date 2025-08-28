@@ -347,7 +347,7 @@ elif page_selection == "📋 Detailed Data":
         col1, col2 = st.columns(2)
         with col1:
             if 'spam_classification' in df_spam.columns:
-                filter_type = st.selectbox("Filter by Type:", ["All", "Spam Only", "Non-Spam Only"], index=0)
+                filter_type = st.selectbox("Filter by Type:", ["Spam Only", "Not Spam"], index=0)
             else:
                 filter_type = "All"
                 st.info("ℹ️ spam_classification column not found. Showing all data.")
@@ -453,35 +453,6 @@ elif page_selection == "📈 Visualizations":
                     use_container_width=True)
         except:
             st.markdown('<div class="warning-box">⚠️ Visualization image not found</div>', unsafe_allow_html=True)
-    
-    # Additional interactive visualizations
-    if data_loaded and df_spam is not None:
-        st.markdown("### 📊 Interactive Analysis")
-        
-        # Time-based analysis (if date column exists)
-        date_columns = [col for col in df_spam.columns if 'date' in col.lower() or 'time' in col.lower()]
-        if date_columns:
-            st.markdown("#### 📅 Temporal Distribution")
-            st.info("📅 Time-based analysis detected but not yet implemented")
-        
-        # Text length analysis with error handling
-        try:
-            text_columns = [col for col in df_spam.columns if 'text' in col.lower()]
-            if text_columns and 'processed_text' in df_spam.columns:
-                df_viz = df_spam.copy()
-                df_viz['text_length'] = df_viz[text_columns[0]].astype(str).str.len()
-                
-                fig = px.box(df_viz, x='processed_text', y='text_length', 
-                            title="Text Length Distribution by Category",
-                            color='processed_text',
-                            color_discrete_map={'spam': '#ff6b6b', 'non_spam': '#4ecdc4'})
-                
-                fig.update_layout(height=400)
-                st.plotly_chart(fig, use_container_width=True)
-            else:
-                st.info("📊 Text analysis requires 'text' and 'processed_text' columns")
-        except Exception as e:
-            st.warning(f"⚠️ Could not create text length analysis: {str(e)}")
 
 elif page_selection == "📝 Reports":
     st.markdown('<div class="section-header"><h2>📝 Comprehensive Analysis Report</h2></div>', unsafe_allow_html=True)
