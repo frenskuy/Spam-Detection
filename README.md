@@ -56,9 +56,6 @@ Spam-Detection/
 
 <p align="center">
   <img src="Output/wordcloud_spam_analysis_20250828_070512.png" alt="WordCloud Spam" width="600"/>
-</p>
-
-<p align="center">
   <img src="Output/visualisasi_spam_detail_20250828_070506.png" alt="Distribusi Spam Detail" width="600"/>
 </p>
 
