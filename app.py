@@ -251,13 +251,26 @@ if page_selection == "📊 Overview & Metrics":
     st.markdown('<div class="section-header"><h2>📊 Dashboard Overview</h2></div>', unsafe_allow_html=True)
     
     if data_loaded and df_spam is not None:
-        # Create metrics
+        # Create metrics with error handling
         col1, col2, col3, col4 = st.columns(4)
         
-        total_tweets = len(df_spam)
-        spam_count = df_spam['prediction'].value_counts().get('spam', 0) if 'prediction' in df_spam.columns else 0
-        non_spam_count = total_tweets - spam_count
-        spam_percentage = (spam_count / total_tweets * 100) if total_tweets > 0 else 0
+        try:
+            total_tweets = len(df_spam)
+            
+            # Safe prediction counting
+            if 'prediction' in df_spam.columns:
+                prediction_counts = df_spam['prediction'].value_counts()
+                spam_count = prediction_counts.get('spam', 0)
+                non_spam_count = total_tweets - spam_count
+                spam_percentage = (spam_count / total_tweets * 100) if total_tweets > 0 else 0
+            else:
+                spam_count = 0
+                non_spam_count = total_tweets
+                spam_percentage = 0
+                
+        except Exception as e:
+            st.error(f"Error calculating metrics: {str(e)}")
+            total_tweets = spam_count = non_spam_count = spam_percentage = 0
         
         with col1:
             st.markdown(f"""
@@ -328,49 +341,75 @@ elif page_selection == "📋 Detailed Data":
     st.markdown('<div class="section-header"><h2>📋 Detailed Spam Detection Results</h2></div>', unsafe_allow_html=True)
     
     if data_loaded and df_spam is not None:
-        # Filter options
+        # Filter options with default values
         col1, col2 = st.columns(2)
         with col1:
             if 'prediction' in df_spam.columns:
-                filter_type = st.selectbox("Filter by Type:", ["All", "Spam Only", "Non-Spam Only"])
+                filter_type = st.selectbox("Filter by Type:", ["All", "Spam Only", "Non-Spam Only"], index=0)
+            else:
+                filter_type = "All"
+                st.info("ℹ️ Prediction column not found. Showing all data.")
         with col2:
             search_term = st.text_input("🔍 Search in tweets:", "")
         
-        # Apply filters
+        # Apply filters with error handling
         filtered_df = df_spam.copy()
         
-        if filter_type == "Spam Only" and 'prediction' in df_spam.columns:
-            filtered_df = filtered_df[filtered_df['prediction'] == 'spam']
-        elif filter_type == "Non-Spam Only" and 'prediction' in df_spam.columns:
-            filtered_df = filtered_df[filtered_df['prediction'] != 'spam']
+        try:
+            if filter_type == "Spam Only" and 'prediction' in df_spam.columns:
+                filtered_df = filtered_df[filtered_df['prediction'] == 'spam']
+            elif filter_type == "Non-Spam Only" and 'prediction' in df_spam.columns:
+                filtered_df = filtered_df[filtered_df['prediction'] != 'spam']
+        except Exception as e:
+            st.error(f"Error applying filter: {str(e)}")
+            filtered_df = df_spam.copy()
         
-        if search_term and 'text' in filtered_df.columns:
-            filtered_df = filtered_df[filtered_df['text'].str.contains(search_term, case=False, na=False)]
+        # Apply search filter with error handling
+        if search_term and len(search_term.strip()) > 0:
+            text_columns = [col for col in filtered_df.columns if 'text' in col.lower()]
+            if text_columns:
+                try:
+                    mask = filtered_df[text_columns[0]].astype(str).str.contains(search_term, case=False, na=False)
+                    filtered_df = filtered_df[mask]
+                except Exception as e:
+                    st.warning(f"Search failed: {str(e)}. Showing all data.")
         
         st.markdown(f"### Showing {len(filtered_df)} results")
         
-        if show_raw_data:
-            st.dataframe(filtered_df.head(max_rows), use_container_width=True)
-        else:
-            # Display in a more user-friendly format
-            for idx, row in filtered_df.head(max_rows).iterrows():
-                prediction = row.get('prediction', 'Unknown')
-                color = "#ff6b6b" if prediction == 'spam' else "#4ecdc4"
-                
-                st.markdown(f"""
-                <div style="background: white; padding: 1rem; border-radius: 8px; margin: 0.5rem 0; 
-                           border-left: 4px solid {color}; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                        <span style="background: {color}; color: white; padding: 0.2rem 0.8rem; border-radius: 15px; font-size: 0.8rem;">
-                            {prediction.upper()}
-                        </span>
-                        <small style="color: #666;">ID: {row.get('id', idx)}</small>
+        # Display data with error handling
+        try:
+            if show_raw_data:
+                st.dataframe(filtered_df.head(max_rows), use_container_width=True)
+            else:
+                # Display in a more user-friendly format
+                for idx, row in filtered_df.head(max_rows).iterrows():
+                    prediction = row.get('prediction', 'Unknown')
+                    color = "#ff6b6b" if prediction == 'spam' else "#4ecdc4"
+                    
+                    # Safe text extraction
+                    text_content = str(row.get('text', 'No text available'))
+                    if len(text_content) > 200:
+                        text_display = text_content[:200] + "..."
+                    else:
+                        text_display = text_content
+                    
+                    st.markdown(f"""
+                    <div style="background: white; padding: 1rem; border-radius: 8px; margin: 0.5rem 0; 
+                               border-left: 4px solid {color}; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="background: {color}; color: white; padding: 0.2rem 0.8rem; border-radius: 15px; font-size: 0.8rem;">
+                                {prediction.upper()}
+                            </span>
+                            <small style="color: #666;">ID: {row.get('id', idx)}</small>
+                        </div>
+                        <p style="margin: 0; color: #333; line-height: 1.5;">
+                            {text_display}
+                        </p>
                     </div>
-                    <p style="margin: 0; color: #333; line-height: 1.5;">
-                        {row.get('text', 'No text available')[:200]}{'...' if len(str(row.get('text', ''))) > 200 else ''}
-                    </p>
-                </div>
-                """, unsafe_allow_html=True)
+                    """, unsafe_allow_html=True)
+        except Exception as e:
+            st.error(f"Error displaying data: {str(e)}")
+            st.dataframe(filtered_df.head(max_rows), use_container_width=True)
     
     else:
         st.markdown('<div class="warning-box">⚠️ Spam detection data not available</div>', unsafe_allow_html=True)
@@ -385,7 +424,7 @@ elif page_selection == "📈 Visualizations":
         try:
             st.image("Output/wordcloud_spam_analysis_20250828_070512.png", 
                     caption="Wordcloud: Spam vs Non-Spam Terms", 
-                    use_column_width=True)
+                    use_container_width=True)
         except:
             st.markdown('<div class="warning-box">⚠️ Wordcloud image not found</div>', unsafe_allow_html=True)
     
@@ -394,7 +433,7 @@ elif page_selection == "📈 Visualizations":
         try:
             st.image("Output/visualisasi_spam_detail_20250828_070506.png", 
                     caption="Comprehensive Spam Detection Analysis", 
-                    use_column_width=True)
+                    use_container_width=True)
         except:
             st.markdown('<div class="warning-box">⚠️ Visualization image not found</div>', unsafe_allow_html=True)
     
@@ -406,19 +445,26 @@ elif page_selection == "📈 Visualizations":
         date_columns = [col for col in df_spam.columns if 'date' in col.lower() or 'time' in col.lower()]
         if date_columns:
             st.markdown("#### 📅 Temporal Distribution")
-            # Add time-based visualization here
+            st.info("📅 Time-based analysis detected but not yet implemented")
         
-        # Text length analysis
-        if 'text' in df_spam.columns:
-            df_spam['text_length'] = df_spam['text'].astype(str).str.len()
-            
-            fig = px.box(df_spam, x='prediction', y='text_length', 
-                        title="Text Length Distribution by Category",
-                        color='prediction',
-                        color_discrete_map={'spam': '#ff6b6b', 'non_spam': '#4ecdc4'})
-            
-            fig.update_layout(height=400)
-            st.plotly_chart(fig, use_container_width=True)
+        # Text length analysis with error handling
+        try:
+            text_columns = [col for col in df_spam.columns if 'text' in col.lower()]
+            if text_columns and 'prediction' in df_spam.columns:
+                df_viz = df_spam.copy()
+                df_viz['text_length'] = df_viz[text_columns[0]].astype(str).str.len()
+                
+                fig = px.box(df_viz, x='prediction', y='text_length', 
+                            title="Text Length Distribution by Category",
+                            color='prediction',
+                            color_discrete_map={'spam': '#ff6b6b', 'non_spam': '#4ecdc4'})
+                
+                fig.update_layout(height=400)
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("📊 Text analysis requires 'text' and 'prediction' columns")
+        except Exception as e:
+            st.warning(f"⚠️ Could not create text length analysis: {str(e)}")
 
 elif page_selection == "📝 Reports":
     st.markdown('<div class="section-header"><h2>📝 Comprehensive Analysis Report</h2></div>', unsafe_allow_html=True)
