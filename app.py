@@ -356,7 +356,7 @@ elif page_selection == "📋 Detailed Data":
             if filter_type == "Spam" and 'spam_classification' in df_spam.columns:
                 filtered_df = filtered_df[filtered_df['spam_classification'] == 'Spam']
             elif filter_type == "Not Spam" and 'spam_classification' in df_spam.columns:
-                filtered_df = filtered_df[filtered_df['spam_classification'] != 'Spam']
+                filtered_df = filtered_df[filtered_df['spam_classification'] == 'Not Spam']
         except Exception as e:
             st.error(f"Error applying filter: {str(e)}")
             filtered_df = df_spam.copy()
