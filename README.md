@@ -1,6 +1,6 @@
 # 🚀 Capstone Project – Analisis Sentimen & Deteksi Spam Twitter
 
-Proyek ini merupakan **Capstone Project** dari **Frenky Riski Gilang Pratama** yang berfokus pada **Data Classification & Summarization** menggunakan **IBM Granite LLM**.  
+Proyek ini merupakan **Capstone Project** dari **Frenky Riski Gilang Pratama** pada course **Data Classification & Summarization** menggunakan **IBM Granite LLM**.  
 Dataset yang digunakan berasal dari hasil **crawling Twitter** pada periode **1 Agustus 2025 – 26 Agustus 2025**.  
 
 ---
