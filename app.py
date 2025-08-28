@@ -260,8 +260,8 @@ if page_selection == "📊 Overview & Metrics":
             # Hitung spam & non-spam dari kolom spam_classification
             if 'spam_classification' in df_spam.columns:
                 classification_counts = df_spam['spam_classification'].value_counts()
-                spam_count = classification_counts.get('spam', 0)
-                non_spam_count = classification_counts.get('non-spam', 0)
+                spam_count = classification_counts.get('Spam', 0)
+                non_spam_count = classification_counts.get('Not Spam', 0)
                 spam_percentage = (spam_count / total_tweets * 100) if total_tweets > 0 else 0
             else:
                 spam_count = 0
