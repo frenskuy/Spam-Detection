@@ -5,6 +5,14 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 # ===============================
+# INITIALIZE SESSION STATE
+# ===============================
+if 'page_selection' not in st.session_state:
+    st.session_state.page_selection = "📊 Overview & Metrics"
+if 'filter_type' not in st.session_state:
+    st.session_state.filter_type = "All"
+
+# ===============================
 # PAGE CONFIG & CUSTOM CSS
 # ===============================
 st.set_page_config(
@@ -181,32 +189,19 @@ st.markdown("""
 # SIDEBAR + MAIN NAVIGATION
 # ===============================
 st.sidebar.markdown("## 🎯 Navigation")
-page_selection = st.sidebar.selectbox(
+
+# Gunakan session state untuk page selection
+page_options = ["📊 Overview & Metrics", "📋 Detailed Data", "📈 Visualizations", "📝 Reports", "💡 Insights"]
+selected_page = st.sidebar.selectbox(
     "Choose Analysis Section:",
-    ["📊 Overview & Metrics", "📋 Detailed Data", "📈 Visualizations", "📝 Reports", "💡 Insights"]
+    page_options,
+    index=page_options.index(st.session_state.page_selection),
+    key="sidebar_page_selector"
 )
 
-# Fallback navigation di main area jika sidebar bermasalah
-st.markdown("### 🧭 Quick Navigation")
-col1, col2, col3, col4, col5 = st.columns(5)
-
-with col1:
-    if st.button("📊 Overview", use_container_width=True):
-        page_selection = "📊 Overview & Metrics"
-with col2:
-    if st.button("📋 Data", use_container_width=True):
-        page_selection = "📋 Detailed Data"
-with col3:
-    if st.button("📈 Charts", use_container_width=True):
-        page_selection = "📈 Visualizations"
-with col4:
-    if st.button("📝 Report", use_container_width=True):
-        page_selection = "📝 Reports"
-with col5:
-    if st.button("💡 Insights", use_container_width=True):
-        page_selection = "💡 Insights"
-
-st.markdown("---")
+# Update session state ketika ada perubahan
+if selected_page != st.session_state.page_selection:
+    st.session_state.page_selection = selected_page
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 🔧 Settings")
@@ -221,6 +216,32 @@ st.sidebar.markdown("""
 - **Accuracy**: Loading...
 """)
 
+# Fallback navigation di main area - MODIFIED
+st.markdown("### 🧭 Quick Navigation")
+col1, col2, col3, col4, col5 = st.columns(5)
+
+with col1:
+    if st.button("📊 Overview", use_container_width=True):
+        st.session_state.page_selection = "📊 Overview & Metrics"
+        st.rerun()
+with col2:
+    if st.button("📋 Data", use_container_width=True):
+        st.session_state.page_selection = "📋 Detailed Data"
+        st.rerun()
+with col3:
+    if st.button("📈 Charts", use_container_width=True):
+        st.session_state.page_selection = "📈 Visualizations"
+        st.rerun()
+with col4:
+    if st.button("📝 Report", use_container_width=True):
+        st.session_state.page_selection = "📝 Reports"
+        st.rerun()
+with col5:
+    if st.button("💡 Insights", use_container_width=True):
+        st.session_state.page_selection = "💡 Insights"
+        st.rerun()
+
+st.markdown("---")
 # ===============================
 # LOAD DATA WITH ERROR HANDLING
 # ===============================
