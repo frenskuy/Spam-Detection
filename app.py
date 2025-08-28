@@ -392,18 +392,53 @@ elif st.session_state.page_selection == "📋 Detailed Data":
             st.error(f"Error applying filter: {str(e)}")
             filtered_df = df_spam.copy()
         
+        # TOMBOL DOWNLOAD - TAMBAHAN BARU
+        col_dl1, col_dl2, col_dl3 = st.columns([1, 1, 2])
+        
+        with col_dl1:
+            # Download CSV
+            csv = filtered_df.to_csv(index=False)
+            st.download_button(
+                label="📥 Download CSV",
+                data=csv,
+                file_name=f"spam_data_{st.session_state.filter_type.lower().replace(' ', '_')}.csv",
+                mime="text/csv",
+                use_container_width=True
+            )
+        
+        with col_dl2:
+            # Download Excel
+            output = io.BytesIO()
+            with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+                filtered_df.to_excel(writer, index=False, sheet_name='Spam Data')
+            excel_data = output.getvalue()
+            
+            st.download_button(
+                label="📊 Download Excel",
+                data=excel_data,
+                file_name=f"spam_data_{st.session_state.filter_type.lower().replace(' ', '_')}.xlsx",
+                mime="application/vnd.ms-excel",
+                use_container_width=True
+            )
+        
+        st.markdown("---")
+        
         # Tampilkan data
         display_cols = ["processed_text", "spam_reason"]
         available_cols = [col for col in display_cols if col in filtered_df.columns]
         
         if not available_cols:
             st.warning("⚠️ Kolom processed_text / spam_reason tidak ditemukan dalam dataset.")
+            st.dataframe(filtered_df.head(max_rows), use_container_width=True)
         else:
             try:
                 st.dataframe(filtered_df[available_cols].head(max_rows), use_container_width=True)
             except Exception as e:
                 st.error(f"Error displaying data: {str(e)}")
                 st.dataframe(filtered_df.head(max_rows), use_container_width=True)
+        
+        # Tampilkan statistik quick
+        st.markdown(f"**Total Records:** {len(filtered_df):,} | **Filter:** {st.session_state.filter_type}")
     
     else:
         st.markdown('<div class="warning-box">⚠️ Spam detection data not available</div>', unsafe_allow_html=True)
