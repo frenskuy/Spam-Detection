@@ -257,11 +257,11 @@ if page_selection == "📊 Overview & Metrics":
         try:
             total_tweets = len(df_spam)
             
-            # Safe prediction counting
-            if 'prediction' in df_spam.columns:
-                prediction_counts = df_spam['prediction'].value_counts()
-                spam_count = prediction_counts.get('spam', 0)
-                non_spam_count = total_tweets - spam_count
+            # Hitung spam & non-spam dari kolom spam_classification
+            if 'spam_classification' in df_spam.columns:
+                classification_counts = df_spam['spam_classification'].value_counts()
+                spam_count = classification_counts.get('spam', 0)
+                non_spam_count = classification_counts.get('non-spam', 0)
                 spam_percentage = (spam_count / total_tweets * 100) if total_tweets > 0 else 0
             else:
                 spam_count = 0
@@ -272,6 +272,7 @@ if page_selection == "📊 Overview & Metrics":
             st.error(f"Error calculating metrics: {str(e)}")
             total_tweets = spam_count = non_spam_count = spam_percentage = 0
         
+        # Metrics cards
         with col1:
             st.markdown(f"""
             <div class="metric-card">
@@ -304,14 +305,14 @@ if page_selection == "📊 Overview & Metrics":
             </div>
             """, unsafe_allow_html=True)
         
-        # Interactive Donut Chart
-        if 'prediction' in df_spam.columns:
+        # Donut chart
+        if 'spam_classification' in df_spam.columns:
             st.markdown("### 📊 Spam Distribution")
-            prediction_counts = df_spam['prediction'].value_counts()
+            classification_counts = df_spam['spam_classification'].value_counts()
             
             fig = go.Figure(data=[go.Pie(
-                labels=prediction_counts.index,
-                values=prediction_counts.values,
+                labels=classification_counts.index,
+                values=classification_counts.values,
                 hole=0.6,
                 marker_colors=['#ff6b6b', '#4ecdc4'],
                 textinfo='label+percent',
@@ -324,7 +325,8 @@ if page_selection == "📊 Overview & Metrics":
                 font=dict(size=16),
                 showlegend=True,
                 height=400,
-                annotations=[dict(text='Total<br>' + str(total_tweets), x=0.5, y=0.5, font_size=20, showarrow=False)]
+                annotations=[dict(text='Total<br>' + str(total_tweets), 
+                                  x=0.5, y=0.5, font_size=20, showarrow=False)]
             )
             
             st.plotly_chart(fig, use_container_width=True)
