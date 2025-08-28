@@ -14,6 +14,18 @@ Tujuan utama dari proyek ini adalah mengeksplorasi bagaimana **Large Language Mo
 
 ---
 
+## 🌐 Live Demo (Streamlit App)
+Kamu bisa langsung mencoba dashboard di sini:  
+👉 [Twitter Spam Detection Dashboard](https://twitter-spam-detection.streamlit.app/)  
+
+Tampilan dashboard:  
+
+<p align="center">
+  <img src="Output/dashboard_st.png" alt="Dashboard Preview" width="600"/>
+</p>
+
+---
+
 ## 📂 Struktur Repository
 ```
 Spam-Detection/
@@ -32,7 +44,10 @@ Spam-Detection/
 │   └── tweet_spam_summary_20250828_070506.csv
 │   └── visualisasi_spam_detail_20250828_070506.png
 │   └── wordcloud_spam_analysis_20250828_070512.png
-└── README.md
+├── README.md
+├── app.py
+├── requirements.txt
+└── url.txt
 ```
 ---
 
@@ -40,7 +55,8 @@ Spam-Detection/
 - **Python** (Pandas, Numpy, Matplotlib, Seaborn)  
 - **LangChain Community + Replicate API** (akses IBM Granite LLM)
 - **Transformers (HuggingFace)** untuk NLP pipeline    
-- **WordCloud** untuk visualisasi teks  
+- **WordCloud** untuk visualisasi teks
+- - **Streamlit** untuk interactive dashboard    
 
 ---
 
