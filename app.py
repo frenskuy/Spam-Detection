@@ -353,7 +353,7 @@ elif page_selection == "📋 Detailed Data":
         # Apply filters
         filtered_df = df_spam.copy()
         try:
-            if filter_type == "Spam Only" and 'spam_classification' in df_spam.columns:
+            if filter_type == "Spam" and 'spam_classification' in df_spam.columns:
                 filtered_df = filtered_df[filtered_df['spam_classification'] == 'spam']
             elif filter_type == "Not Spam" and 'spam_classification' in df_spam.columns:
                 filtered_df = filtered_df[filtered_df['spam_classification'] != 'spam']
