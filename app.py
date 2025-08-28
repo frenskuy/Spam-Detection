@@ -343,52 +343,29 @@ elif page_selection == "📋 Detailed Data":
     st.markdown('<div class="section-header"><h2>📋 Detailed Spam Detection Results</h2></div>', unsafe_allow_html=True)
     
     if data_loaded and df_spam is not None:
-        # Initialize session state for filter if not exists
-        if 'spam_filter_type' not in st.session_state:
-            st.session_state.spam_filter_type = "Spam"
+        # Pastikan session_state ada untuk filter
+        if "filter_type" not in st.session_state:
+            st.session_state.filter_type = "All"
         
-        # Filter options hanya Spam/Not Spam
+        # Filter options hanya jika ada kolom spam_classification
         if 'spam_classification' in df_spam.columns:
-            # Use session state to maintain filter selection
             filter_type = st.selectbox(
-                "Filter by Type:", 
-                ["Spam", "Not Spam"], 
-                index=0 if st.session_state.spam_filter_type == "Spam" else 1,
-                key="spam_filter_selectbox"
+                "Filter by Type:",
+                ["All", "Spam", "Not Spam"],
+                index=["All", "Spam", "Not Spam"].index(st.session_state.filter_type),
+                key="filter_type"
             )
-            # Update session state
-            st.session_state.spam_filter_type = filter_type
         else:
             filter_type = "All"
             st.info("ℹ️ spam_classification column not found. Showing all data.")
         
-        # Apply filters with better error handling
+        # Copy data
+        filtered_df = df_spam.copy()
         try:
-            filtered_df = df_spam.copy()
-            
-            if filter_type == "Spam" and 'spam_classification' in df_spam.columns:
-                # Case-insensitive comparison
-                mask = df_spam['spam_classification'].str.lower() == 'spam'
-                filtered_df = df_spam[mask]
-            elif filter_type == "Not Spam" and 'spam_classification' in df_spam.columns:
-                # Case-insensitive comparison and handle various formats
-                mask = (df_spam['spam_classification'].str.lower() == 'not spam') | \
-                       (df_spam['spam_classification'].str.lower() == 'not_spam') | \
-                       (df_spam['spam_classification'].str.lower() == 'ham') | \
-                       (df_spam['spam_classification'].str.lower() == 'legitimate')
-                filtered_df = df_spam[mask]
-            
-            # Debug info - temporary, remove in production
-            st.write(f"Filter selected: {filter_type}")
-            st.write(f"Total rows after filter: {len(filtered_df)}")
-            
-            if len(filtered_df) == 0:
-                st.warning(f"⚠️ No data found for filter: {filter_type}")
-                # Show unique values for debugging
-                if 'spam_classification' in df_spam.columns:
-                    unique_vals = df_spam['spam_classification'].unique()
-                    st.write(f"Available values in spam_classification: {unique_vals}")
-                
+            if filter_type == "Spam":
+                filtered_df = filtered_df[filtered_df['spam_classification'] == 'Spam']
+            elif filter_type == "Not Spam":
+                filtered_df = filtered_df[filtered_df['spam_classification'] == 'Not Spam']
         except Exception as e:
             st.error(f"Error applying filter: {str(e)}")
             filtered_df = df_spam.copy()
@@ -399,27 +376,12 @@ elif page_selection == "📋 Detailed Data":
         
         if not available_cols:
             st.warning("⚠️ Kolom processed_text / spam_reason tidak ditemukan dalam dataset.")
-            # Show all available columns for debugging
-            st.write(f"Available columns: {list(filtered_df.columns)}")
         else:
             try:
-                # Ensure max_rows is defined
-                max_rows = getattr(st.session_state, 'max_rows', 100)
-                
-                # Display data with error handling
-                display_data = filtered_df[available_cols].head(max_rows)
-                if len(display_data) > 0:
-                    st.dataframe(display_data, use_container_width=True)
-                else:
-                    st.info("📝 No data to display with current filter.")
-                    
+                st.dataframe(filtered_df[available_cols].head(max_rows), use_container_width=True)
             except Exception as e:
                 st.error(f"Error displaying data: {str(e)}")
-                # Fallback display
-                try:
-                    st.dataframe(filtered_df.head(max_rows), use_container_width=True)
-                except:
-                    st.error("Unable to display data. Please check data format.")
+                st.dataframe(filtered_df.head(max_rows), use_container_width=True)
     
     else:
         st.markdown('<div class="warning-box">⚠️ Spam detection data not available</div>', unsafe_allow_html=True)
