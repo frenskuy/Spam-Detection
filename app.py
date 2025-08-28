@@ -368,15 +368,26 @@ elif page_selection == "📋 Detailed Data":
         
         # Apply search filter with error handling
         if search_term and len(search_term.strip()) > 0:
-            text_columns = [col for col in filtered_df.columns if 'text' in col.lower()]
+            # Cari kolom teks prioritas
+            possible_text_cols = ["full_text", "processed_text", "spam_classification", "spam_indicators"]
+            text_columns = [col for col in possible_text_cols if col in filtered_df.columns]
+        
+            # Kalau tidak ketemu, fallback ke kolom string terpanjang
+            if not text_columns:
+                object_cols = [col for col in filtered_df.columns if filtered_df[col].dtype == 'object']
+                if object_cols:
+                    avg_len = {col: filtered_df[col].astype(str).str.len().mean() for col in object_cols}
+                    text_columns = [max(avg_len, key=avg_len.get)]  # ambil kolom dengan rata-rata panjang terbesar
+        
             if text_columns:
                 try:
                     mask = filtered_df[text_columns[0]].astype(str).str.contains(search_term, case=False, na=False)
                     filtered_df = filtered_df[mask]
                 except Exception as e:
                     st.warning(f"Search failed: {str(e)}. Showing all data.")
-        
-        st.markdown(f"### Showing {len(filtered_df)} results")
+            else:
+                st.warning("⚠️ No text column found. Please check your dataset.")
+
         
         # Display data with error handling
         try:
