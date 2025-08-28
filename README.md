@@ -38,7 +38,8 @@ Spam-Detection/
 
 ## ⚙️ Teknologi yang Digunakan
 - **Python** (Pandas, Numpy, Matplotlib, Seaborn)  
-- **LangChain Community + Replicate API** (akses IBM Granite LLM)    
+- **LangChain Community + Replicate API** (akses IBM Granite LLM)
+- **Transformers (HuggingFace)** untuk NLP pipeline    
 - **WordCloud** untuk visualisasi teks  
 
 ---
