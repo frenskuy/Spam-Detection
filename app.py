@@ -343,90 +343,36 @@ elif page_selection == "📋 Detailed Data":
     st.markdown('<div class="section-header"><h2>📋 Detailed Spam Detection Results</h2></div>', unsafe_allow_html=True)
     
     if data_loaded and df_spam is not None:
-        # Filter options with default values
-        col1, col2 = st.columns(2)
-        with col1:
-            if 'spam_classification' in df_spam.columns:
-                filter_type = st.selectbox("Filter by Type:", ["Spam Only", "Not Spam"], index=0)
-            else:
-                filter_type = "All"
-                st.info("ℹ️ spam_classification column not found. Showing all data.")
-        with col2:
-            search_term = st.text_input("🔍 Search in tweets:", "")
+        # Filter options hanya Spam/Not Spam
+        if 'spam_classification' in df_spam.columns:
+            filter_type = st.selectbox("Filter by Type:", ["Spam Only", "Not Spam"], index=0)
+        else:
+            filter_type = "All"
+            st.info("ℹ️ spam_classification column not found. Showing all data.")
         
-        # Apply filters with error handling
+        # Apply filters
         filtered_df = df_spam.copy()
-        
         try:
             if filter_type == "Spam Only" and 'spam_classification' in df_spam.columns:
                 filtered_df = filtered_df[filtered_df['spam_classification'] == 'spam']
-            elif filter_type == "Non-Spam Only" and 'spam_classification' in df_spam.columns:
+            elif filter_type == "Not Spam" and 'spam_classification' in df_spam.columns:
                 filtered_df = filtered_df[filtered_df['spam_classification'] != 'spam']
         except Exception as e:
             st.error(f"Error applying filter: {str(e)}")
             filtered_df = df_spam.copy()
         
-        # Apply search filter with error handling
-        if search_term and len(search_term.strip()) > 0:
-            # Cari kolom teks prioritas
-            possible_text_cols = ["full_text", "processed_text", "spam_classification", "spam_indicators"]
-            text_columns = []
-            if 'full_text' in filtered_df.columns:
-                text_columns.append('full_text')
-            elif 'processed_text' in filtered_df.columns:
-                text_columns.append('processed_text')
+        # Tampilkan hanya kolom processed_text & spam_reason
+        display_cols = ["processed_text", "spam_reason"]
+        available_cols = [col for col in display_cols if col in filtered_df.columns]
         
-            # Kalau tidak ketemu, fallback ke kolom string terpanjang
-            if not text_columns:
-                object_cols = [col for col in filtered_df.columns if filtered_df[col].dtype == 'object']
-                if object_cols:
-                    avg_len = {col: filtered_df[col].astype(str).str.len().mean() for col in object_cols}
-                    text_columns = [max(avg_len, key=avg_len.get)]  # ambil kolom dengan rata-rata panjang terbesar
-        
-            if text_columns:
-                try:
-                    mask = filtered_df[text_columns[0]].astype(str).str.contains(search_term, case=False, na=False)
-                    filtered_df = filtered_df[mask]
-                except Exception as e:
-                    st.warning(f"Search failed: {str(e)}. Showing all data.")
-            else:
-                st.warning("⚠️ No text column found. Please check your dataset.")
-
-        
-        # Display data with error handling
-        try:
-            if show_raw_data:
+        if not available_cols:
+            st.warning("⚠️ Kolom processed_text / spam_reason tidak ditemukan dalam dataset.")
+        else:
+            try:
+                st.dataframe(filtered_df[available_cols].head(max_rows), use_container_width=True)
+            except Exception as e:
+                st.error(f"Error displaying data: {str(e)}")
                 st.dataframe(filtered_df.head(max_rows), use_container_width=True)
-            else:
-                # Display in a more user-friendly format
-                for idx, row in filtered_df.head(max_rows).iterrows():
-                    prediction = row.get('prediction', 'Unknown')
-                    color = "#ff6b6b" if prediction == 'spam' else "#4ecdc4"
-                    
-                    # Safe text extraction
-                    text_content = str(row.get('text', 'No text available'))
-                    if len(text_content) > 200:
-                        text_display = text_content[:200] + "..."
-                    else:
-                        text_display = text_content
-                    
-                    st.markdown(f"""
-                    <div style="background: white; padding: 1rem; border-radius: 8px; margin: 0.5rem 0; 
-                               border-left: 4px solid {color}; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                            <span style="background: {color}; color: white; padding: 0.2rem 0.8rem; border-radius: 15px; font-size: 0.8rem;">
-                                {prediction.upper()}
-                            </span>
-                            <small style="color: #666;">ID: {row.get('id', idx)}</small>
-                        </div>
-                        <p style="margin: 0; color: #333; line-height: 1.5;">
-                            {text_display}
-                        </p>
-                    </div>
-                    """, unsafe_allow_html=True)
-        except Exception as e:
-            st.error(f"Error displaying data: {str(e)}")
-            st.dataframe(filtered_df.head(max_rows), use_container_width=True)
     
     else:
         st.markdown('<div class="warning-box">⚠️ Spam detection data not available</div>', unsafe_allow_html=True)
