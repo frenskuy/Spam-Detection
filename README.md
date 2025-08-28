@@ -21,7 +21,7 @@ Kamu bisa langsung mencoba dashboard di sini:
 Tampilan dashboard:  
 
 <p align="center">
-  <img src="Output/dashboard_st.png" alt="Dashboard Preview" width="600"/>
+  <img src="Output/dahboard_st.png" alt="Dashboard Preview" width="600"/>
 </p>
 
 ---
