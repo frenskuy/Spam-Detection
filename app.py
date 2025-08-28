@@ -402,7 +402,7 @@ elif st.session_state.page_selection == "📋 Detailed Data":
             st.download_button(
                 label="📥 Download CSV",
                 data=csv,
-                file_name=f"spam_data_{st.session_state.filter_type.lower().replace(' ', '_')}.csv",
+                file_name=f"csv_data_{st.session_state.filter_type.lower().replace(' ', '_')}.csv",
                 mime="text/csv",
                 use_container_width=True
             )
@@ -417,7 +417,7 @@ elif st.session_state.page_selection == "📋 Detailed Data":
             st.download_button(
                 label="📊 Download Excel",
                 data=excel_data,
-                file_name=f"spam_data_{st.session_state.filter_type.lower().replace(' ', '_')}.xlsx",
+                file_name=f"excel_data_{st.session_state.filter_type.lower().replace(' ', '_')}.xlsx",
                 mime="application/vnd.ms-excel",
                 use_container_width=True
             )
