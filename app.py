@@ -770,6 +770,7 @@ elif st.session_state.page_selection == "💡 Insights":
         """, unsafe_allow_html=True)
     
     with
+
 # ===============================
 # FOOTER
 # ===============================
