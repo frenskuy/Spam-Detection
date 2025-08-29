@@ -553,7 +553,7 @@ if st.session_state.page_selection == "📊 Overview & Metrics":
             fig.update_layout(
                 title={
                     'text': "Spam vs Non-Spam Distribution",
-                    'x': 0.5,
+                    'x': 0.33,
                     'font': {'size': 18, 'color': '#f0f6fc'}
                 },
                 font=dict(size=16, color='#f0f6fc'),
@@ -730,10 +730,10 @@ elif st.session_state.page_selection == "💡 Insights":
         <div class="success-box">
             <h3>✅ Key Findings</h3>
             <ul style="text-align: left; margin: 1rem 0; padding-left: 1.5rem;">
-                <li><strong>High Accuracy:</strong> IBM Granite LLM demonstrates exceptional spam detection performance</li>
-                <li><strong>Pattern Recognition:</strong> Spam tweets typically contain promotional content and shortened URLs</li>
-                <li><strong>Natural Language:</strong> Non-spam content exhibits more natural language patterns and engagement</li>
-                <li><strong>Clickbait Indicators:</strong> Sensational headlines and call-to-action phrases are strong spam predictors</li>
+                <li><strong>Akurasi Tinggi:</strong> IBM Granite LLM menunjukkan performa deteksi spam yang sangat baik</li>
+                <li><strong>Pengenalan Pola:</strong> Tweet spam umumnya berisi konten promosi dan URL yang dipersingkat</li>
+                <li><strong>Bahasa Natural:</strong> Konten non-spam menunjukkan pola bahasa yang lebih natural dan engagement tinggi</li>
+                <li><strong>Indikator Clickbait:</strong> Judul sensasional dan frasa call-to-action menjadi prediktor spam yang kuat</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -743,15 +743,14 @@ elif st.session_state.page_selection == "💡 Insights":
         <div class="info-box">
             <h3>🚀 Future Enhancements</h3>
             <ul style="text-align: left; margin: 1rem 0; padding-left: 1.5rem;">
-                <li><strong>Real-time Processing:</strong> Implement live sentiment analysis pipeline</li>
-                <li><strong>Temporal Analysis:</strong> Add trend analysis and time-series forecasting</li>
-                <li><strong>Dataset Expansion:</strong> Incorporate multilingual and diverse data sources</li>
-                <li><strong>Advanced NLP:</strong> Integrate transformer models and contextual embeddings</li>
+                <li><strong>Pemrosesan Real-time:</strong> Implementasi pipeline analisis sentimen langsung</li>
+                <li><strong>Analisis Temporal:</strong> Menambah analisis tren dan forecasting time-series</li>
+                <li><strong>Ekspansi Dataset:</strong> Menggabungkan sumber data multibahasa dan beragam</li>
+                <li><strong>NLP Lanjutan:</strong> Integrasi model transformer dan contextual embeddings</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
     
-    # Additional insights section
     st.markdown("### 📈 Performance Metrics")
     
     col3, col4 = st.columns(2)
@@ -760,11 +759,11 @@ elif st.session_state.page_selection == "💡 Insights":
         st.markdown("""
         <div style="background: var(--secondary-dark); border: 1px solid var(--border-color); border-left: 4px solid var(--accent-purple); padding: 1.5rem; border-radius: 8px;">
             <h4>🎯 Model Performance</h4>
-            <p>The IBM Granite LLM model shows excellent performance in distinguishing between spam and legitimate content, with particular strength in identifying:</p>
+            <p>Model IBM Granite LLM menunjukkan performa yang sangat baik dalam membedakan spam dan konten legitimate, dengan kekuatan khusus dalam mengidentifikasi:</p>
             <ul style="margin: 1rem 0; padding-left: 1.5rem;">
-                <li>Commercial promotional content</li>
-                <li>Suspicious URL patterns</li>
-                <li>Repetitive messaging structures</li>
+                <li>Konten promosi komersial</li>
+                <li>Pola URL yang mencurigakan</li>
+                <li>Struktur pesan yang berulang-ulang</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -773,44 +772,11 @@ elif st.session_state.page_selection == "💡 Insights":
         st.markdown("""
         <div style="background: var(--secondary-dark); border: 1px solid var(--border-color); border-left: 4px solid var(--accent-green); padding: 1.5rem; border-radius: 8px;">
             <h4>📊 Data Quality Assessment</h4>
-            <p>Our analysis reveals robust data quality standards across all metrics:</p>
+            <p>Analisis kami mengungkap standar kualitas data yang robust di semua metrik:</p>
             <ul style="margin: 1rem 0; padding-left: 1.5rem;">
-                <li>High data completeness and integrity</li>
-                <li>Consistent labeling accuracy</li>
-                <li>Minimal false positive/negative rates</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    # Technical specifications section
-    st.markdown("### 🔧 Technical Specifications")
-    
-    col5, col6 = st.columns(2)
-    
-    with col5:
-        st.markdown("""
-        <div style="background: var(--secondary-dark); border: 1px solid var(--border-color); border-left: 4px solid var(--accent-orange); padding: 1.5rem; border-radius: 8px;">
-            <h4>⚙️ System Architecture</h4>
-            <p><strong>Core Technologies:</strong></p>
-            <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
-                <li><strong>AI Model:</strong> IBM Granite LLM</li>
-                <li><strong>Framework:</strong> Streamlit Dashboard</li>
-                <li><strong>Visualization:</strong> Plotly Interactive Charts</li>
-                <li><strong>Data Processing:</strong> Pandas & NumPy</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col6:
-        st.markdown("""
-        <div style="background: var(--secondary-dark); border: 1px solid var(--border-color); border-left: 4px solid var(--accent-blue); padding: 1.5rem; border-radius: 8px;">
-            <h4>📈 Performance Benchmarks</h4>
-            <p><strong>Key Metrics:</strong></p>
-            <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
-                <li><strong>Processing Speed:</strong> Real-time analysis</li>
-                <li><strong>Accuracy Rate:</strong> >95% classification accuracy</li>
-                <li><strong>Scalability:</strong> Handles large datasets efficiently</li>
-                <li><strong>Response Time:</strong> Sub-second inference</li>
+                <li>Kelengkapan dan integritas data yang tinggi</li>
+                <li>Akurasi pelabelan yang konsisten</li>
+                <li>Tingkat false positive/negative yang minimal</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -827,7 +793,7 @@ st.markdown("""
     </p>
     <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
         <p style="font-size: 0.8rem; color: var(--text-muted);">
-            Professional Dark Theme Dashboard | Enhanced User Experience | Enterprise-Grade Analytics
+            Dashboard | Enhanced User Experience | Enterprise-Grade Analytics
         </p>
         <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
             Dataset Analysis Period: August 1-26, 2025 | Real-time Processing Capabilities
