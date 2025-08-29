@@ -56,7 +56,7 @@ Spam-Detection/
 - **LangChain Community + Replicate API** (akses IBM Granite LLM)
 - **Transformers (HuggingFace)** untuk NLP pipeline    
 - **WordCloud** untuk visualisasi teks
-- - **Streamlit** untuk interactive dashboard    
+- **Streamlit** untuk interactive dashboard    
 
 ---
 
