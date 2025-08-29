@@ -1,5 +1,4 @@
-
-# LAPORAN DETAIL DETEKSI SPAM TWITTER
+# LAPORAN DETEKSI SPAM TWITTER
 
 ## Ringkasan Eksekutif
 - **Total Tweet Dianalisis**: 859
@@ -19,11 +18,15 @@
 
 ### Contoh 1 (Confidence: 10/10)
 **Tweet**: DPR NGENTOT @DPR_RI...
+
 **Alasan**: Tweet tersebut diklasifikasikan sebagai spam karena mengandung kata-kata yang tidak sopan dan tidak relevan dengan konteks umum. Unuknya "DPR NGENTOT @DPR_RI" adalah contoh clickbait extreme dan tidak bermanfaat, bertujuan secara tidak etis untuk menarik perhatian dengan cara menggunakan nama individu terkait tanpa konteks yang relevan. Ini melanggar kriteria spam yang melibatkan konten yang tidak bermanfaat dan bertujuan untuk menarik perhatian secara tidak etis. Tidak ada konteks diskusi, informasi faktual, opini pribadi wajar, interaksi sosial normal, konten edukatif, atau update status personal yang dapat diidentifikasi dalam tweet ini.
 
 ### Contoh 2 (Confidence: 9/10)
 **Tweet**: https://t.co/vuQGDRQLDN https://t.co/JzoFYblhJv https://t.co/Ox6A5fYY8s https://t.co/pGXrnM21x3 http...
-**Alasan**: 1. URL/Link mencurigakan: Tweet ini mengandung banyak link (enam link dalam total 140 karakter, terbatas pada ketika tweet terbaru). Link-link ini tidak memberikan konteks tentang apa yang akan diperoleh saat diakses, sehingga disusun sebagai indikator spam.
+
+**Alasan**: 
+
+1. URL/Link mencurigakan: Tweet ini mengandung banyak link (enam link dalam total 140 karakter, terbatas pada ketika tweet terbaru). Link-link ini tidak memberikan konteks tentang apa yang akan diperoleh saat diakses, sehingga disusun sebagai indikator spam.
 
 2. Promosi berlebihan: Tweet ini menampilkan banyak link, yang dapat diinterpreto sebagai promosi berlebihan tanpa konteks yang relevan.
 
@@ -35,7 +38,10 @@ Dalam hal ini, tweet tersebut dianggap spam karena ketergantungan yang signifika
 
 ### Contoh 3 (Confidence: 9/10)
 **Tweet**: Klaim 10.000 saldo pas download apk Shopeepay ada promo serba seribu. Upgrade ke Shopeepay plus log ...
-**Alasan**: 1. URL/Link mencurigakan: Tweet mengandung beberapa link (https://t.co/VB9obXpDhy, https://t.co/N9zrIFx9A8) yang tidak memberikan konteks tentang apa yang akan diperoleh setelah mengklik.
+
+**Alasan**: 
+
+1. URL/Link mencurigakan: Tweet mengandung beberapa link (https://t.co/VB9obXpDhy, https://t.co/N9zrIFx9A8) yang tidak memberikan konteks tentang apa yang akan diperoleh setelah mengklik.
 
 2. Promosi berlebihan: Tweet menggunakan kata-kata seperti "klaim", "promo serba seribu", dan "diskon" untuk menarik perhatian.
 
