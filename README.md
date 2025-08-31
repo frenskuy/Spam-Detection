@@ -44,7 +44,7 @@ Spam-Detection/
 │   └── tweet_spam_summary_20250828_070506.csv
 │   └── visualisasi_spam_detail_20250828_070506.png
 │   └── wordcloud_spam_analysis_20250828_070512.png
-├── PPT
+├── PPT/
 │   └── PPT CAPSTONE IBM FRENKY.pdf
 ├── README.md
 ├── app.py
